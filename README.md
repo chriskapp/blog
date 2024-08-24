@@ -1,1 +1,4 @@
-# blog
+
+# Blog
+
+Simple blog engine
