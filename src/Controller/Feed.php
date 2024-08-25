@@ -9,6 +9,7 @@ use PSX\Framework\Config\ConfigInterface;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Http\Environment\HttpResponse;
+use PSX\Sql\OrderBy;
 
 class Feed extends ControllerAbstract
 {
@@ -41,7 +42,7 @@ class Feed extends ControllerAbstract
         $link->setAttribute('href', (string) $this->reverseRouter->getUrl([Index::class, 'show']));
         $link->setAttribute('type', 'text/html');
 
-        $entries = $this->blogTable->findAll();
+        $entries = $this->blogTable->findAll(startIndex: 0, count: 32, sortBy: Table\Generated\BlogTable::COLUMN_ID, sortOrder: OrderBy::DESC);
         foreach ($entries as $entry) {
             $entryElement = $feed->appendChild($dom->createElement('entry'));
 
