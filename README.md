@@ -31,3 +31,16 @@ return [
     // ...
 ];
 ```
+
+And you need to add the `container.php` file to the container builder:
+
+```php
+return \PSX\Framework\Dependency\ContainerBuilder::build(
+    __DIR__,
+    true,
+    __DIR__ . '/vendor/psx/framework/resources/container.php',
+    __DIR__ . '/vendor/chriskapp/blog/resources/container.php',
+    __DIR__ . '/resources/container.php',
+);
+
+```
