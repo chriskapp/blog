@@ -28,7 +28,7 @@ class Index extends ControllerAbstract
         $startIndex   = $this->getStartIndex($startIndex);
 
         $data = [
-            'title' => 'chriskapp | Blog',
+            'title' => $this->config->get('blog_title'),
             'canonical' => $this->reverseRouter->getUrl([self::class, 'show']) . (($startIndex > 0) ? '?startIndex=' . $startIndex : ''),
             'totalResults' => $totalResults,
             'startIndex' => $startIndex,
