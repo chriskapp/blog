@@ -34,7 +34,7 @@ class Detail extends ControllerAbstract
             'entry' => $entry,
         ];
 
-        $templateFile = __DIR__ . '/../../../resources/template/' . $this->config->get('blog_template_detail');
+        $templateFile = __DIR__ . '/../../../../../resources/template/' . $this->config->get('blog_template_detail');
         return new Template($data, $templateFile, $this->reverseRouter);
     }
 }

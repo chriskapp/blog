@@ -36,7 +36,7 @@ class Index extends ControllerAbstract
             'links' => $this->getLinks($selfUrl, $startIndex, $totalResults),
         ];
 
-        $templateFile = __DIR__ . '/../../resources/template/' . $this->config->get('blog_template_index');
+        $templateFile = __DIR__ . '/../../../../../resources/template/' . $this->config->get('blog_template_index');
         return new Template($data, $templateFile, $this->reverseRouter);
     }
 
