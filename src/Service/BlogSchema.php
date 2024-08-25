@@ -1,23 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Chriskapp\Blog\Migrations;
+namespace Chriskapp\Blog\Service;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
-final class Version20240823181908 extends AbstractMigration
+class BlogSchema
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
-    public function up(Schema $schema): void
+    public static function build(Schema $schema): void
     {
         $table = $schema->createTable('app_blog');
         $table->addColumn('id', 'string', ['length' => 64]);
@@ -30,14 +19,5 @@ final class Version20240823181908 extends AbstractMigration
         $table->addColumn('category', 'string');
         $table->addColumn('content', 'text');
         $table->setPrimaryKey(['id']);
-    }
-
-    public function down(Schema $schema): void
-    {
-    }
-
-    public function isTransactional(): bool
-    {
-        return false;
     }
 }
