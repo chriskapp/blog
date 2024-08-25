@@ -41,40 +41,40 @@ class Feed extends ControllerAbstract
         $link->setAttribute('href', (string) $this->reverseRouter->getUrl([Index::class, 'show']));
         $link->setAttribute('type', 'text/html');
 
-        $root = $feed->appendChild($dom->createElement('entry'));
-
         $entries = $this->blogTable->findAll();
         foreach ($entries as $entry) {
+            $entryElement = $feed->appendChild($dom->createElement('entry'));
+
             $url = (string) $this->reverseRouter->getUrl([Detail::class, 'show'], ['title' => $entry->getTitleSlug()]);
 
-            $root->appendChild($dom->createElement('id', $url));
-            $root->appendChild($dom->createElement('title', $entry->getTitle()));
-            $root->appendChild($dom->createElement('updated', $entry->getUpdated()->toString()));
+            $entryElement->appendChild($dom->createElement('id', $url));
+            $entryElement->appendChild($dom->createElement('title', $entry->getTitle()));
+            $entryElement->appendChild($dom->createElement('updated', $entry->getUpdated()->toString()));
 
             $linkElement = $dom->createElement('link');
             $linkElement->setAttribute('rel', 'alternate');
             $linkElement->setAttribute('href', $url);
             $linkElement->setAttribute('type', 'text/html');
-            $root->appendChild($linkElement);
+            $entryElement->appendChild($linkElement);
 
             $authorElement = $dom->createElement('author');
             $authorElement->appendChild($dom->createElement('name', $entry->getAuthorName()));
             $authorElement->appendChild($dom->createElement('uri', $entry->getAuthorUri()));
-            $root->appendChild($authorElement);
+            $entryElement->appendChild($authorElement);
 
             $summaryElement = $dom->createElement('summary', $entry->getSummary());
-            $root->appendChild($summaryElement);
+            $entryElement->appendChild($summaryElement);
 
             $categories = explode(',', $entry->getCategory());
             foreach ($categories as $category) {
                 $categoryElement = $dom->createElement('category');
                 $categoryElement->setAttribute('term', $category);
-                $root->appendChild($categoryElement);
+                $entryElement->appendChild($categoryElement);
             }
 
             $contentElement = $dom->createElement('content', $entry->getContent());
             $contentElement->setAttribute('type', 'html');
-            $root->appendChild($contentElement);
+            $entryElement->appendChild($contentElement);
         }
 
         return new HttpResponse(
