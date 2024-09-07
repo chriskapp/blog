@@ -42,7 +42,7 @@ class Feed extends ControllerAbstract
         $link->setAttribute('href', (string) $this->reverseRouter->getUrl([Index::class, 'show']));
         $link->setAttribute('type', 'text/html');
 
-        $entries = $this->blogTable->findAll(startIndex: 0, count: 32, sortBy: Table\Generated\BlogTable::COLUMN_ID, sortOrder: OrderBy::DESC);
+        $entries = $this->blogTable->findAll(startIndex: 0, count: 32, sortBy: Table\Generated\BlogTable::COLUMN_UPDATED, sortOrder: OrderBy::DESC);
         foreach ($entries as $entry) {
             $entryElement = $feed->appendChild($dom->createElement('entry'));
 
