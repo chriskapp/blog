@@ -31,6 +31,7 @@ class Detail extends ControllerAbstract
         $data = [
             'title' => $entry->getTitle(),
             'canonical' => $this->reverseRouter->getUrl([self::class, 'show'], [$entry->getTitleSlug()]),
+            'description' => $entry->getSummary(),
             'entry' => $entry,
         ];
 
