@@ -2,16 +2,19 @@
 
 namespace Chriskapp\Blog\Table;
 
+use Chriskapp\Blog\Table\Generated\BlogRow;
 use Chriskapp\Blog\Table\Generated\BlogTable;
 use PSX\DateTime\LocalDateTime;
 
 class Blog extends BlogTable
 {
+    /**
+     * @return array<BlogRow>
+     */
     public function findIndexEntries(int $startIndex): array
     {
         $startIndex = max($startIndex, 0);
 
-        /** @psalm-suppress TooManyArguments */
         $builder = $this->connection->createQueryBuilder()
             ->select(self::COLUMN_ID, self::COLUMN_TITLE, self::COLUMN_TITLE_SLUG, self::COLUMN_AUTHOR_NAME, self::COLUMN_AUTHOR_URI, self::COLUMN_UPDATED, self::COLUMN_SUMMARY, self::COLUMN_CATEGORY)
             ->from(self::NAME)

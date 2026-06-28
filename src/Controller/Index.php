@@ -42,6 +42,8 @@ class Index extends ControllerAbstract
 
     /**
      * Returns the HATEOAS links for further navigation
+     *
+     * @return array<array{rel: string, href: string}>
      */
     private function getLinks(string $selfUrl, ?int $startIndex, int $totalResults): array
     {

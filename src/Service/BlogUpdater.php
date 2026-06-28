@@ -5,9 +5,11 @@ namespace Chriskapp\Blog\Service;
 use Chriskapp\Blog\Controller\Detail;
 use Chriskapp\Blog\Table\Blog;
 use Chriskapp\Blog\Table\Generated\BlogRow;
+use DOMElement;
 use PSX\DateTime\LocalDateTime;
 use PSX\Framework\Config\ConfigInterface;
 use PSX\Framework\Loader\ReverseRouter;
+use RuntimeException;
 
 class BlogUpdater
 {
@@ -21,20 +23,20 @@ class BlogUpdater
         $dom->load($this->config->get('blog_file'));
 
         foreach ($dom->getElementsByTagName('entry') as $entry) {
-            if (!$entry instanceof \DOMElement) {
+            if (!$entry instanceof DOMElement) {
                 continue;
             }
 
-            $title = $entry->getElementsByTagName('title')->item(0)?->textContent ?? throw new \RuntimeException('Provided no title');
+            $title = $this->getRequiredText($entry, 'title');
 
             $slug = $this->slugify->slugify($title);
 
             $id = (string) $this->reverseRouter->getUrl([Detail::class, 'show'], ['title' => $slug]);
 
-            $updated = LocalDateTime::parse($entry->getElementsByTagName('updated')->item(0)?->textContent ?? throw new \RuntimeException('Provided no updated'));
+            $updated = LocalDateTime::parse($this->getRequiredText($entry, 'updated'));
 
-            $summary = trim($entry->getElementsByTagName('summary')->item(0)?->textContent ?? throw new \RuntimeException('Provided no summary'));
-            $content = trim($entry->getElementsByTagName('content')->item(0)?->textContent ?? throw new \RuntimeException('Provided no content'));
+            $summary = trim($this->getRequiredText($entry, 'summary'));
+            $content = trim($this->getRequiredText($entry, 'content'));
 
             $categories = [];
             foreach ($entry->getElementsByTagName('category') as $categoryElement) {
@@ -79,5 +81,15 @@ class BlogUpdater
                 }
             }
         }
+    }
+
+    private function getRequiredText(DOMElement $entry, string $name): string
+    {
+        $text = $entry->getElementsByTagName($name)->item(0)?->textContent;
+        if (empty($text)) {
+            throw new RuntimeException('Provided no ' . $name);
+        }
+
+        return $text;
     }
 }
